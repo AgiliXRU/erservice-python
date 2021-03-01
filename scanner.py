@@ -22,9 +22,6 @@ class AlertScanner:
             if patient.get_priority() == Priority.RED:
                 if patient.get_transport_id() not in self.critical_patient_notifications_sent:
                     self.alert_for_new_critical_patient(patient)
-            elif patient.get_priority() == Priority.YELLOW and patient.condition == "heart arrhythmia":
-                if patient.get_transport_id() not in self.critical_patient_notifications_sent:
-                    self.alert_for_new_critical_patient(patient)
 
     def alert_for_new_critical_patient(self, patient):
         try:
