@@ -153,7 +153,9 @@ Content-Type: application/json
 1. move extracted method to a new class
 1. use test double for a new class in tests
 
-## Task #5: Do not count inbound if condition contains "ambulatory" or "non-emergency"  
+## Task #5: Do not count inbound if non-critical condition
+
+Non-critical mean contains "ambulatory" or "non-emergency"  
 
 ## Technique
 ## § Sprout method
@@ -167,6 +169,12 @@ Content-Type: application/json
 
 
 ## Task #6: Add to message current divergence situation when any message send
+
+eg:
+```text
+Situation report: 
+Inbound patients requiring beds: 1 Red, 2 Yellow, 3 Green.
+```
 
 ## Technique
 ## § Sprout class
