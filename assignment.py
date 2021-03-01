@@ -34,7 +34,7 @@ class StaffAssignmentManager:
     def get_physicians_on_duty(self):
         physicians = list()
         for staff in self.shift_staff:
-            if staff.role == StaffRole.DOCTOR or staff.role == StaffRole.RESIDENT:
+            if staff.role == StaffRole.DOCTOR:
                 physicians.append(staff)
         return physicians
 
