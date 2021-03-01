@@ -1,0 +1,45 @@
+GET http://localhost:8000/inboundPatients
+
+###
+
+GET http://localhost:8000/physiciansOnDuty
+
+
+###
+
+GET http://localhost:4567/inbound
+
+###
+
+POST http://localhost:4567/simulateNewTransport
+Content-Type: application/json
+
+{
+  "name": "Sandra Plum",
+  "priority": "RED",
+  "condition": "stroke"
+}
+
+
+###
+
+POST http://localhost:4567/arrived?transportId=1
+Content-Type: application/json
+
+{}
+
+
+###
+
+POST http://localhost:4567/diversion?priority=RED
+Content-Type: application/json
+
+{}
+
+
+###
+
+POST http://localhost:4567/diversionStop?priority=RED
+Content-Type: application/json
+
+{}
