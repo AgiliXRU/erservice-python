@@ -6,6 +6,21 @@ from assignment import StaffAssignmentManager
 from vendor.pager_system import PagerSystem
 
 
+class DivergenceReport(object):
+
+    def __init__(self, red_count, yellow_count, green_count):
+        self.green_count = green_count
+        self.yellow_count = yellow_count
+        self.red_count = red_count
+
+    def generate(self):
+        return "Situation report\n" \
+               f"Inbound patients requiring beds: " \
+               f"{self.red_count} Red, " \
+               f"{self.yellow_count} Yellow, " \
+               f"{self.green_count} Green."
+
+
 class DivergenceController:
     ADMIN_ON_CALL_DEVICE = "111-111-1111"
 
@@ -148,11 +163,14 @@ class DivergenceController:
                         red_incremented = True
                         self.red_count += 1
 
+        report = DivergenceReport(self.red_count, self.yellow_count, self.green_count)
+        text = report.generate()
+
         if red_incremented:
             if self.red_count > self.allowed_count and not self.red_divergence:
                 self.red_divergence = True
                 transport_service.request_inbound_diversion(Priority.RED)
-                self.send_divergence_page("Entered divergence for RED priority patients!", True)
+                self.send_divergence_page("Entered divergence for RED priority patients!" + text, True)
                 self.red_count = 0
         else:
             self.red_count = 0
