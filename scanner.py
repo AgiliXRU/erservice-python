@@ -25,13 +25,11 @@ class AlertScanner:
 
     def alert_for_new_critical_patient(self, patient):
         try:
-
-            if patient.priority == Priority.RED:
-                transport = PagerSystem.get_transport()
-                transport.initialize()
-                transport.transmit_requiring_acknowledgement(self.ADMIN_ON_CALL_DEVICE,
-                                                             "New inbound critical patient: " +
-                                                             patient.get_transport_id())
+            transport = PagerSystem.get_transport()
+            transport.initialize()
+            transport.transmit_requiring_acknowledgement(self.ADMIN_ON_CALL_DEVICE,
+                                                         "New inbound critical patient: " +
+                                                         patient.get_transport_id())
             self.critical_patient_notifications_sent.append(patient.get_transport_id())
         except RuntimeError:
             print("Failed attempt to use pager system to device " + self.ADMIN_ON_CALL_DEVICE)
