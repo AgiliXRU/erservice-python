@@ -35,4 +35,4 @@ start.bat
 ```
 
 
-You can see [Tasks.md](/Tasks.md) for 
+You can see [Tasks.md](/Tasks.md) for further instructions

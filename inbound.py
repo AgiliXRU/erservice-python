@@ -1,7 +1,7 @@
 from xml.etree import ElementTree
 
 from emergency_response import EmergencyResponseService
-from patient import Patient
+from patient import Patient, Priority
 
 
 class InboundPatientController(object):
@@ -24,7 +24,7 @@ class InboundPatientController(object):
                     if subnode.tag == 'TransportId':
                         patient.set_transport_id(int(subnode.text))
                     if subnode.tag == 'Priority':
-                        patient.set_priority(subnode.text)
+                        patient.set_priority(Priority[subnode.text])
                 patients.append(patient)
         except RuntimeError as e:
             print(str(e))
