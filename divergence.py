@@ -56,7 +56,7 @@ class DivergenceController:
             if bed.is_critical_care():
                 bedcrits += 1
 
-        for patient in patients:
+        for patient in self.affected_patients(patients):
             if patient.get_priority() == Priority.RED:
                 redin += 1
             elif patient.getPriority() == Priority.YELLOW:
@@ -198,3 +198,10 @@ class DivergenceController:
 
         except RuntimeError as e:
             print(e)
+
+    def affected_patients(self, patients):
+        result = list()
+        for patient in patients:
+            if "ambulatory" not in patient.get_condition():
+                result.append(patient)
+        return result
