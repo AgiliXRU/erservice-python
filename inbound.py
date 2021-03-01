@@ -1,7 +1,7 @@
 from xml.etree import ElementTree
 
 from emergency_response import EmergencyResponseService
-from patient import Patient
+from patient import Patient, Priority
 
 
 class InboundPatientController(object):
@@ -12,6 +12,11 @@ class InboundPatientController(object):
 
     def current_inbound_patients(self):
         xml_for_inbound = self.transport_service.fetch_inbound_patients()
+        patients = self.get_patients_from_xml(xml_for_inbound)
+        print("Returning inbound patients: " + str(len(patients)))
+        return patients
+
+    def get_patients_from_xml(self, xml_for_inbound):
         patients = list()
         try:
             print("Recieved XML from transport service: {}\n".format(xml_for_inbound))
@@ -24,11 +29,12 @@ class InboundPatientController(object):
                     if subnode.tag == 'TransportId':
                         patient.set_transport_id(int(subnode.text))
                     if subnode.tag == 'Priority':
-                        patient.set_priority(subnode.text)
+                        patient.set_priority(Priority[subnode.text])
+                    if subnode.tag == 'Condition':
+                        patient.set_condition(subnode.text)
                 patients.append(patient)
         except RuntimeError as e:
             print(str(e))
-        print("Returning inbound patients: " + str(len(patients)))
         return patients
 
     def inform_of_patient_arrival(self, transport_id):
