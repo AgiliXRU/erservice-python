@@ -21,11 +21,14 @@ def create_patient(transport_id, priority, condition=""):
 
 
 class MockAlertScanner(AlertScanner):
+    acknowledged = list()
+    regular = list()
 
-    patients = list()
+    def transmit_with_acknowledge(self, device, text):
+        self.acknowledged.append(text)
 
-    def alert_for_new_critical_patient(self, patient):
-        self.patients.append(patient)
+    def transmit(self, device, text):
+        self.regular.append(text)
 
 
 def test_scan_for_red_priority_patients():
@@ -36,9 +39,7 @@ def test_scan_for_red_priority_patients():
 
     scanner.scan()
 
-    assert len(scanner.patients) == 2
-    assert scanner.patients[0].get_transport_id() == 11
-    assert scanner.patients[0].get_priority() == Priority.RED
-    assert scanner.patients[1].get_transport_id() == 12
-    assert scanner.patients[1].get_priority() == Priority.YELLOW
-    assert scanner.patients[1].get_condition() == "heart arrhythmia"
+    assert len(scanner.acknowledged) == 1
+    assert scanner.acknowledged[0] == "New inbound critical patient: 11"
+    assert len(scanner.regular) == 1
+    assert scanner.regular[0] == "New inbound critical patient: 12"
