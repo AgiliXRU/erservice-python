@@ -12,8 +12,10 @@ class StaffAssignmentManager:
     beds = list()
     bed_staff_assignments = dict()
 
-    def __init__(self, staff_repo=StaffRepository(), bed_repo=BedRepository()):
+    def __init__(self):
+        staff_repo = StaffRepository()
         self.shift_staff.extend(staff_repo.get_shift_staff())
+        bed_repo = BedRepository()
         self.beds.extend(bed_repo.get_all_beds())
 
     def get_shift_staff(self):
