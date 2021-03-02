@@ -55,8 +55,11 @@ class Patient:
 
 class PatientEncoder(JSONEncoder):
     def default(self, o):
-        return {
-            "transportId": int(o.transport_id),
-            "name": o.name,
-            "priority": o.priority
-        }
+        if type(o) is Priority:
+            return o.name
+        else:
+            return {
+                "transportId": int(o.transport_id),
+                "name": o.name,
+                "priority": o.priority
+            }

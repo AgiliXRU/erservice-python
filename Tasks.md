@@ -10,7 +10,7 @@ from: http://127.0.0.1:4567/inbound
 		<TransportId>1</TransportId>
 		<Name>John Doe</Name>
 		<Condition>heart arrhythmia</Condition>
-		<Priority>Priority.YELLOW</Priority>
+		<Priority>YELLOW</Priority>
 		<Birthdate></Birthdate>
 	</Patient>
 </Inbound>

@@ -14,9 +14,10 @@ class StaffAssignmentManager:
 
     def __init__(self):
         staff_repo = StaffRepository()
-        self.shift_staff.extend(staff_repo.get_shift_staff())
+        self.shift_staff = staff_repo.get_shift_staff()
+        print(len(self.shift_staff))
         bed_repo = BedRepository()
-        self.beds.extend(bed_repo.get_all_beds())
+        self.beds = bed_repo.get_all_beds()
 
     def get_shift_staff(self):
         return self.shift_staff
@@ -35,6 +36,9 @@ class StaffAssignmentManager:
 
     def get_physicians_on_duty(self):
         physicians = list()
+        print(len(self.shift_staff))
+        print(len(physicians))
+
         for staff in self.shift_staff:
             if staff.role == StaffRole.DOCTOR:
                 physicians.append(staff)
