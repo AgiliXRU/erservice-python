@@ -34,5 +34,11 @@ start_fake.bat
 start.bat
 ```
 
+### Run via docker
+```shell
+docker build -t er-server .
+docker run -v "$(pwd):/usr/src/app" -p8000:8000 -it er-server /bin/bash
+```
+
 
 You can see [Tasks.md](/Tasks.md) for further instructions

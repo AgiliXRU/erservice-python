@@ -3,6 +3,7 @@ import falcon
 
 from assign_patient import AssignPatientToBedCommand
 from assign_staff import AssignStaffToBedCommand
+from bed import BedEncoder
 from emergency_response import EmergencyResponseService
 from staff import StaffEncoder
 from assignment import StaffAssignmentManager
@@ -71,10 +72,10 @@ class Beds(object):
         self.manager = StaffAssignmentManager()
 
     def on_get(self, req, resp):
-        print("Recieved request for all beds from client.")
-        physicians = self.manager.get_beds()
+        print("Received request for all beds from client.")
+        beds = self.manager.get_beds()
         resp.status = falcon.HTTP_200
-        resp.body = json.dumps(physicians, cls=StaffEncoder, indent=4)
+        resp.body = json.dumps(beds, cls=BedEncoder, indent=4)
 
 
 class AssignToBed(object):
@@ -86,10 +87,10 @@ class AvailableBeds(object):
         self.manager = StaffAssignmentManager()
 
     def on_get(self, req, resp):
-        print("Recieved request for available beds from client.")
-        physicians = self.manager.get_available_beds()
+        print("Received request for available beds from client.")
+        beds = self.manager.get_available_beds()
         resp.status = falcon.HTTP_200
-        resp.body = json.dumps(physicians, cls=StaffEncoder, indent=4)
+        resp.text = json.dumps(beds, cls=BedEncoder, indent=4)
 
 
 class AssignPatientToBed(AssignToBed):
@@ -113,12 +114,29 @@ class AssignStaffToBed(AssignToBed):
         command = AssignStaffToBedCommand(StaffAssignmentManager())
         command.assign_staff_to_bed(transport_id, bed_id)
         resp.status = falcon.HTTP_200
-        resp.body = "OK"
+        resp.text = "OK"
+
+
+class ShowRoutesInfo:
+
+    def on_get(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = falcon.MEDIA_HTML
+        resp.text = "<h1>Available endpoints:</h1>"  \
+                    "GET /inboundPatients<br />"  \
+                    "GET /shiftStaff<br />" \
+                    "GET /availableStaff<br />"  \
+                    "GET /physiciansOnDuty<br />"  \
+                    "GET /beds<br />"  \
+                    "GET /availableBeds<br />"  \
+                    "POST /assignPatientToBed<br />"  \
+                    "POST /assignStaffToBed<br />"
 
 
 class EREndpoints:
 
     def initialize_endpoints(self, app):
+        app.add_route('/', ShowRoutesInfo())
         app.add_route('/inboundPatients', CurrentInboundPatients())
         app.add_route('/shiftStaff', ShiftStaff())
         app.add_route('/availableStaff', AvailableStaff())

@@ -71,7 +71,7 @@ class DiversionStop(object):
 
 
 xml = PatientsToXML(list())
-app = falcon.API()
+app = falcon.App()
 app.add_route('/ack', AckResponse())
 app.add_route('/check', CheckResponse())
 app.add_route('/inbound', Inbound())
