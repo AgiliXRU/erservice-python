@@ -4,6 +4,7 @@
     <h3 v-if="loading">Loading...</h3>
     <ul v-if="inboundPatients">
       <li v-for="patient in inboundPatients" v-bind:key="patient">
+        <router-link to="/beds"><button>Assign to bed</button></router-link>
         {{ patient.name }}
         <span v-if="patient.transportId === 1" style="margin: 0 10px">
           приехал в скорой помощи
@@ -42,12 +43,15 @@ export default {
     this.loadInboundPatients();
   },
   methods: {
+    assignBed () {
+      alert('!');
+    },
     loadInboundPatients: async function () {
       this.loading = true;
       this.inboundPatients = [];
       try {
         this.inboundPatients = await fetch(
-          "http://localhost:8000/inboundPatients"
+          "/api/inboundPatients"
         ).then((response) => response.json());
       } catch (error) {
         console.log(error);

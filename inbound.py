@@ -13,8 +13,8 @@ class InboundPatientController(object):
     def current_inbound_patients(self):
         xml_for_inbound = self.transport_service.fetch_inbound_patients()
         patients = list()
+        print("Recieved XML from transport service: {}\n".format(xml_for_inbound))
         try:
-            print("Recieved XML from transport service: {}\n".format(xml_for_inbound))
             root = ElementTree.fromstring(xml_for_inbound)
             for node in root:
                 patient = Patient()

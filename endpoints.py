@@ -95,11 +95,11 @@ class AvailableBeds(object):
 
 class AssignPatientToBed(AssignToBed):
     def on_post(self, req, resp):
-        transport_id = int(req.queryParams("transportId"))
-        bed_id = int(req.queryParams("bedId"))
+        transport_id = int(req.get_param("transportId"))
+        bed_id = int(req.get_param("bedId"))
         print(f"Client request to assign patient {transport_id} to bed {bed_id}")
         command = AssignPatientToBedCommand(StaffAssignmentManager(),
-                                            InboundPatientController(self.emergency_transport_service))
+                                            InboundPatientController(EmergencyResponseService("localhost", 4567, 1000)))
         command.assign_patient_to_bed(transport_id, bed_id)
         resp.status = falcon.HTTP_200
         resp.body = "OK"
@@ -123,26 +123,26 @@ class ShowRoutesInfo:
         resp.status = falcon.HTTP_200
         resp.content_type = falcon.MEDIA_HTML
         resp.text = "<h1>Available endpoints:</h1>"  \
-                    "GET /inboundPatients<br />"  \
-                    "GET /shiftStaff<br />" \
-                    "GET /availableStaff<br />"  \
-                    "GET /physiciansOnDuty<br />"  \
-                    "GET /beds<br />"  \
-                    "GET /availableBeds<br />"  \
-                    "POST /assignPatientToBed<br />"  \
-                    "POST /assignStaffToBed<br />"
+                    "GET /api/inboundPatients<br />"  \
+                    "GET /api/shiftStaff<br />" \
+                    "GET /api/availableStaff<br />"  \
+                    "GET /api/physiciansOnDuty<br />"  \
+                    "GET /api/beds<br />"  \
+                    "GET /api/availableBeds<br />"  \
+                    "POST /api/assignPatientToBed<br />"  \
+                    "POST /api/assignStaffToBed<br />"
 
 
 class EREndpoints:
 
     def initialize_endpoints(self, app):
         app.add_route('/', ShowRoutesInfo())
-        app.add_route('/inboundPatients', CurrentInboundPatients())
-        app.add_route('/shiftStaff', ShiftStaff())
-        app.add_route('/availableStaff', AvailableStaff())
-        app.add_route('/physiciansOnDuty', PhysiciansOnDuty())
-        app.add_route('/beds', Beds())
-        app.add_route('/availableBeds', AvailableBeds())
-        app.add_route('/assignPatientToBed', AssignPatientToBed())
-        app.add_route('/assignStaffToBed', AssignStaffToBed())
-        app.add_route('/scanForCritical', ScanForCritical())
+        app.add_route('/api/inboundPatients', CurrentInboundPatients())
+        app.add_route('/api/shiftStaff', ShiftStaff())
+        app.add_route('/api/availableStaff', AvailableStaff())
+        app.add_route('/api/physiciansOnDuty', PhysiciansOnDuty())
+        app.add_route('/api/beds', Beds())
+        app.add_route('/api/availableBeds', AvailableBeds())
+        app.add_route('/api/assignPatientToBed', AssignPatientToBed())
+        app.add_route('/api/assignStaffToBed', AssignStaffToBed())
+        app.add_route('/api/scanForCritical', ScanForCritical())
